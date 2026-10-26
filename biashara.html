@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Biashara Buddy</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--g:#0e7c4f;--g2:#0a5c3a;--gl:#dff3e7;--bg:#f2f7f4;--card:#fff;--ink:#12241a;--mut:#66796e;--line:#e1eae4;--red:#d64545;--amb:#d9822b;--blue:#2563eb}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1410;--card:#13211a;--ink:#e8f3ec;--mut:#8ba296;--line:#223329;--gl:#163a29}}
+[data-theme=dark]{--bg:#0b1410;--card:#13211a;--ink:#e8f3ec;--mut:#8ba296;--line:#223329;--gl:#163a29}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;font:15px/1.5 "Plus Jakarta Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select{font:inherit;color:inherit}
+input,select{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--card)}
+input:focus,select:focus{outline:none;border-color:var(--g);box-shadow:0 0 0 3px rgba(14,124,79,.18)}
+label{display:block;font-size:13px;font-weight:600;color:var(--mut);margin-bottom:5px}
+.btn{border:0;border-radius:12px;padding:12px 20px;font-weight:700;cursor:pointer;background:var(--g);color:#fff;transition:.15s}
+.btn:hover{background:var(--g2);transform:translateY(-1px)}.btn.alt{background:var(--gl);color:var(--g)}
+.btn.red{background:var(--red)}.btn.sm{padding:6px 12px;font-size:13px;border-radius:9px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 2px 10px rgba(10,60,35,.05)}
+h2{font-size:18px;margin:0 0 14px}
+#login{min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr}
+.hero{background:linear-gradient(150deg,#0a5c3a,#12a566);color:#fff;padding:60px;display:flex;flex-direction:column;justify-content:center;gap:18px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:rgba(255,255,255,.08);right:-140px;bottom:-140px}
+.hero h1{font-size:44px;line-height:1.1;margin:0;font-weight:800}.hero li{margin:8px 0;list-style:none}.hero i{margin-right:10px;opacity:.85}
+.logo{width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:24px}
+.formside{display:grid;place-items:center;padding:30px}.formbox{width:100%;max-width:400px;display:grid;gap:14px}
+.setup{background:#fff4dd;color:#7a4c05;padding:14px 16px;border-radius:12px;font-size:14px;line-height:1.45}
+.demo-btn{background:#1e3a2f;color:#fff;border:1px solid #2d5a45;font-size:16px;padding:14px}
+.demo-btn:hover{background:#264a3a}
+#app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+aside{background:var(--card);border-right:1px solid var(--line);padding:22px 16px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px}
+.brand{display:flex;gap:11px;align-items:center;margin-bottom:18px;cursor:pointer}.brand .logo{width:42px;height:42px;font-size:18px;background:var(--g);color:#fff}
+.brand b{display:block;line-height:1.2}.brand small{color:var(--mut);font-size:12px}
+.nav{display:flex;align-items:center;gap:12px;padding:12px 14px;border:0;background:none;border-radius:12px;cursor:pointer;font-weight:600;color:var(--mut);text-align:left;width:100%}
+.nav:hover{background:var(--bg)}.nav.on{background:var(--gl);color:var(--g)}.nav i{width:20px;text-align:center}
+.sp{flex:1}.badge{font-size:11px;background:var(--amb);color:#fff;padding:2px 8px;border-radius:99px;margin-left:6px}
+main{padding:28px 32px 40px;max-width:1100px;width:100%}
+.top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:22px;gap:10px;flex-wrap:wrap}
+.top h1{margin:0;font-size:28px}.top p{margin:0;color:var(--mut)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.stat{padding:18px}.stat small{color:var(--mut);font-weight:600;display:flex;gap:8px;align-items:center}
+.stat b{font-size:24px;display:block;margin-top:6px}.stat .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:13px}
+.two{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;margin-bottom:18px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form .full{grid-column:1/-1}
+.item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border:0}.item small{display:block;color:var(--mut);font-size:12.5px}
+.acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.pill{padding:3px 10px;border-radius:99px;font-size:12px;font-weight:700;background:var(--gl);color:var(--g)}.pill.w{background:#fdebd3;color:#a15a10}
+.prev{background:var(--gl);color:var(--g);padding:12px 14px;border-radius:12px;font-weight:700;display:flex;justify-content:space-between}
+.mut{color:var(--mut)}.pos{color:var(--g)}.neg{color:var(--red)}
+svg text{fill:var(--mut);font-size:13px;font-weight:600}svg .cv{fill:var(--ink);font-size:12px}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 20px;border-radius:99px;font-weight:600;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:90vw;text-align:center}
+.empty{text-align:center;padding:30px 10px;color:var(--mut)}.empty i{font-size:32px;margin-bottom:10px;opacity:.4}
+
+/* TOUR STYLES */
+#tour-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
+.tour-box{background:var(--card);border-radius:20px;padding:28px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.4);position:relative}
+.tour-box h3{margin:0 0 10px;font-size:20px}
+.tour-box p{margin:0 0 20px;color:var(--mut);line-height:1.5}
+.tour-steps{display:flex;gap:6px;margin-bottom:20px}
+.tour-dot{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.tour-dot.on{background:var(--g)}
+.tour-actions{display:flex;gap:10px;justify-content:flex-end}
+.tour-icon{width:48px;height:48px;border-radius:14px;background:var(--gl);color:var(--g);display:grid;place-items:center;font-size:20px;margin-bottom:14px}
+
+@media (max-width:900px){
+ #login{grid-template-columns:1fr}.hero{padding:36px 26px}.hero h1{font-size:32px}.hero ul{display:none}
+ #app{display:block}
+ aside{position:fixed;top:auto;bottom:0;left:0;right:0;height:auto;flex-direction:row;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:30;border:0;border-top:1px solid var(--line);gap:0}
+ .brand,.sp,.side2{display:none}
+ .nav{flex-direction:column;gap:2px;padding:8px 2px;font-size:11px;text-align:center;justify-content:center;flex:1}
+ main{padding:18px 16px 100px}.stats{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}.form{grid-template-columns:1fr}
+ .top h1{font-size:23px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="hero">
+    <div class="logo"><i class="fas fa-store"></i></div>
+    <h1>Run your shop<br>with confidence.</h1>
+    <p>Record sales, watch your stock, track who owes you and see your real profit — all from your phone.</p>
+    <ul>
+      <li><i class="fas fa-chart-line"></i> Daily & weekly profit at a glance</li>
+      <li><i class="fas fa-box"></i> Low-stock alerts before you run out</li>
+      <li><i class="fas fa-handshake"></i> Never forget who owes you</li>
+    </ul>
+  </div>
+  <div class="formside">
+    <div class="formbox">
+      <div>
+        <h2 style="font-size:26px;margin:0">Welcome</h2>
+        <span class="mut">Start managing your shop right now</span>
+      </div>
+      <div class="setup">
+        <b>Ready to use</b><br>
+        Click the button below to open the full app. No account needed.
+      </div>
+      <button class="btn demo-btn" id="demo" style="margin-top:8px">
+        <i class="fas fa-rocket"></i> Enter the App
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" hidden>
+  <aside>
+    <div class="brand" id="brand" title="Click to rename">
+      <div class="logo"><i class="fas fa-store"></i></div>
+      <div>
+        <b id="bname">Biashara Buddy</b>
+        <small>Business assistant <span class="badge">DEMO</span></small>
+      </div>
+    </div>
+
+    <button class="nav on" data-t="home"><i class="fas fa-house"></i> Home</button>
+    <button class="nav" data-t="sell"><i class="fas fa-cash-register"></i> Sell</button>
+    <button class="nav" data-t="stock"><i class="fas fa-box"></i> Stock</button>
+    <button class="nav" data-t="exp"><i class="fas fa-receipt"></i> Expenses</button>
+    <button class="nav" data-t="debt"><i class="fas fa-handshake"></i> Debts</button>
+    <button class="nav" data-t="rep"><i class="fas fa-file-lines"></i> Reports</button>
+    <button class="nav" data-t="set"><i class="fas fa-gear"></i> Settings</button>
+
+    <div class="sp"></div>
+    <button class="nav side2" id="theme"><i class="fas fa-moon"></i> Dark mode</button>
+    <button class="nav side2" id="out"><i class="fas fa-right-from-bracket"></i> Log out</button>
+  </aside>
+
+  <main>
+    <div class="top">
+      <div>
+        <h1 id="greet">Hello</h1>
+        <p id="date"></p>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn alt sm" id="start-tour"><i class="fas fa-circle-question"></i> How to use</button>
+        <button class="btn alt sm" id="rf"><i class="fas fa-rotate"></i> Refresh</button>
+      </div>
+    </div>
+
+    <!-- HOME -->
+    <section id="t-home">
+      <div class="stats">
+        <div class="card stat">
+          <small><span class="ic" style="background:var(--gl);color:var(--g)"><i class="fas fa-coins"></i></span> Today's sales</small>
+          <b id="s1" class="pos">0</b>
+        </div>
+        <div class="card stat">
+          <small><span class="ic" style="background:#fde4e4;color:var(--red)"><i class="fas fa-receipt"></i></span> Today's expenses</small>
+          <b id="s2" class="neg">0</b>
+        </div>
+        <div class="card stat">
+          <small><span class="ic" style="background:#dbe7fd;color:var(--blue)"><i class="fas fa-sack-dollar"></i></span> Net profit</small>
+          <b id="s3">0</b>
+        </div>
+        <div class="card stat">
+          <small><span class="ic" style="background:#fdebd3;color:var(--amb)"><i class="fas fa-handshake"></i></span> Money owed</small>
+          <b id="s4">0</b>
+        </div>
+      </div>
+
+      <div class="two">
+        <div class="card">
+          <h2>Sales, last 7 days</h2>
+          <svg viewBox="0 0 720 205" width="100%">
+            <defs><linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#12a566"/><stop offset="1" stop-color="#0a5c3a"/></linearGradient></defs>
+            <g id="chart"></g>
+          </svg>
+        </div>
+        <div class="card">
+          <h2>Low stock</h2>
+          <div id="low"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Best sellers this week</h2>
+        <div id="top"></div>
+      </div>
+    </section>
+
+    <!-- SELL -->
+    <section id="t-sell" hidden>
+      <div class="card" style="margin-bottom:18px">
+        <h2>Record a sale</h2>
+        <div class="form">
+          <div class="full">
+            <label for="sp">Product name</label>
+            <input id="sp" type="text" placeholder="Type product name e.g. Maize Flour 2kg" list="product-list">
+            <datalist id="product-list"></datalist>
+          </div>
+          <div>
+            <label for="sq">Quantity</label>
+            <input id="sq" type="number" min="1" value="1">
+          </div>
+          <div>
+            <label for="sprice">Selling Price (KSh)</label>
+            <input id="sprice" type="number" min="0" placeholder="0">
+          </div>
+          <div>
+            <label for="sy">Payment</label>
+            <select id="sy">
+              <option value="cash">Cash</option>
+              <option value="credit">Credit (pay later)</option>
+            </select>
+          </div>
+          <div class="full" id="cf" hidden>
+            <label for="sc">Customer name</label>
+            <input id="sc" placeholder="Who owes you?">
+          </div>
+          <div class="full prev">
+            <span>Total: <span id="pt">KSh 0</span></span>
+          </div>
+          <div class="full">
+            <button class="btn" id="ss"><i class="fas fa-check"></i> Save sale</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Recent sales</h2>
+        <div id="sl"></div>
+      </div>
+    </section>
+
+    <!-- STOCK -->
+    <section id="t-stock" hidden>
+      <div class="card" style="margin-bottom:18px">
+        <h2>Add a product</h2>
+        <div class="form">
+          <div class="full"><label for="pn">Product name</label><input id="pn" placeholder="e.g. Maize Flour 2kg"></div>
+          <div><label for="pb">Buying price</label><input id="pb" type="number" min="0"></div>
+          <div><label for="ps">Selling price</label><input id="ps" type="number" min="0"></div>
+          <div><label for="pq">Quantity</label><input id="pq" type="number" min="0"></div>
+          <div><label for="pt2">Low stock alert at</label><input id="pt2" type="number" value="5"></div>
+          <div class="full"><button class="btn" id="sv"><i class="fas fa-plus"></i> Save product</button></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Your stock <span class="mut" id="sval" style="font-size:13px;font-weight:500"></span></h2>
+        <input id="q" placeholder="Search products…" style="margin-bottom:8px">
+        <div id="stl"></div>
+      </div>
+    </section>
+
+    <!-- EXPENSES -->
+    <section id="t-exp" hidden>
+      <div class="card" style="margin-bottom:18px">
+        <h2>Record an expense</h2>
+        <div class="form">
+          <div><label for="ed">What was it for?</label><input id="ed" placeholder="Rent, transport, electricity…"></div>
+          <div><label for="ea">Amount (KSh)</label><input id="ea" type="number" min="0"></div>
+          <div class="full"><button class="btn red" id="se"><i class="fas fa-plus"></i> Save expense</button></div>
+        </div>
+      </div>
+      <div class="card"><h2>Recent expenses</h2><div id="el"></div></div>
+    </section>
+
+    <!-- DEBTS -->
+    <section id="t-debt" hidden>
+      <div class="card" style="margin-bottom:18px">
+        <h2>Add a debt</h2>
+        <div class="form">
+          <div><label for="dc">Customer name</label><input id="dc" placeholder="Who owes you?"></div>
+          <div><label for="da">Amount (KSh)</label><input id="da" type="number" min="1"></div>
+          <div class="full"><label for="dn">What did they take? (optional)</label><input id="dn" placeholder="e.g. 2 bags of maize flour"></div>
+          <div class="full"><button class="btn" id="sd"><i class="fas fa-plus"></i> Save debt</button></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Customers who owe you <span class="pill w" id="dt"></span></h2>
+        <div id="dl"></div>
+      </div>
+    </section>
+
+    <!-- REPORTS -->
+    <section id="t-rep" hidden>
+      <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+        <div class="card stat"><small>This month's sales</small><b id="m1">0</b></div>
+        <div class="card stat"><small>This month's expenses</small><b id="m2">0</b></div>
+        <div class="card stat"><small>This month's net profit</small><b id="m3">0</b></div>
+      </div>
+      <div class="card">
+        <h2>Download reports (CSV)</h2>
+        <div class="acts" style="justify-content:flex-start;margin-bottom:12px">
+          <button class="btn" id="d1">Sales</button>
+          <button class="btn red" id="d2">Expenses</button>
+          <button class="btn" style="background:var(--blue)" id="d3">Stock</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="t-set" hidden>
+      <div class="card" style="margin-bottom:18px">
+        <h2>Business Settings</h2>
+        <div class="form">
+          <div class="full">
+            <label for="bizname">Business Name</label>
+            <input id="bizname" placeholder="Your shop name">
+          </div>
+          <div class="full">
+            <button class="btn" id="save-name"><i class="fas fa-save"></i> Save Name</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:18px">
+        <h2>Help & Data</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+          <button class="btn alt" id="start-tour2"><i class="fas fa-circle-question"></i> How to use the app</button>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <button class="btn alt" id="seed"><i class="fas fa-magic"></i> Load Demo Data</button>
+          <button class="btn red" id="clear"><i class="fas fa-trash"></i> Clear All Data</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>About</h2>
+        <p class="mut">Biashara Buddy – Simple shop management for Kenyan businesses.</p>
+        <p class="mut" style="margin-top:8px">All data is stored only on this device.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- TOUR OVERLAY -->
+<div id="tour-overlay" hidden>
+  <div class="tour-box">
+    <div class="tour-icon" id="tour-icon"><i class="fas fa-store"></i></div>
+    <h3 id="tour-title">Welcome!</h3>
+    <p id="tour-text">Let's quickly show you how to use Biashara Buddy.</p>
+    <div class="tour-steps" id="tour-dots"></div>
+    <div class="tour-actions">
+      <button class="btn alt sm" id="tour-skip">Skip</button>
+      <button class="btn sm" id="tour-next">Next</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" hidden></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = n => 'KSh ' + Number(n || 0).toLocaleString('en-KE');
+const sum = (a, f) => a.reduce((t, x) => t + Number(f(x) || 0), 0);
+const sod = d => { d = new Date(d); d.setHours(0,0,0,0); return d; };
+const uid = () => 'id_' + Math.random().toString(36).slice(2, 11);
+
+let S = { p: [], s: [], e: [], m: {} };
+let tt;
+let tourStep = 0;
+
+const cost = s => {
+  const prod = S.p.find(p => p.name.toLowerCase() === (s.product_name || '').toLowerCase());
+  return prod ? (prod.buying_price * s.quantity) : 0;
+};
+
+function toast(msg, bad = false) {
+  const e = $('toast');
+  e.textContent = msg;
+  e.style.background = bad ? '#a12a2a' : '';
+  e.style.color = bad ? '#fff' : '';
+  e.hidden = false;
+  clearTimeout(tt);
+  tt = setTimeout(() => e.hidden = true, 2800);
+}
+
+const LS = {
+  get(k, d = []) { try { return JSON.parse(localStorage.getItem('bb_' + k)) || d; } catch { return d; } },
+  set(k, v) { localStorage.setItem('bb_' + k, JSON.stringify(v)); }
+};
+
+/* ===================== TOUR ===================== */
+const tourSteps = [
+  {
+    icon: 'fa-store',
+    title: 'Welcome to Biashara Buddy!',
+    text: 'This short guide will show you how to manage your shop easily. It only takes 30 seconds.'
+  },
+  {
+    icon: 'fa-box',
+    title: '1. Add your products',
+    text: 'Go to the Stock page and add the items you sell. Enter name, buying price, selling price and quantity.'
+  },
+  {
+    icon: 'fa-cash-register',
+    title: '2. Record a sale',
+    text: 'On the Sell page, just type the product name, enter quantity and price, then save. You can also choose Credit if the customer will pay later.'
+  },
+  {
+    icon: 'fa-handshake',
+    title: '3. Track debts',
+    text: 'Go to Debts to see who owes you money. You can also add a debt manually if needed.'
+  },
+  {
+    icon: 'fa-receipt',
+    title: '4. Record expenses',
+    text: 'Use the Expenses page to track rent, transport, electricity and any other costs.'
+  },
+  {
+    icon: 'fa-chart-line',
+    title: 'You\'re ready!',
+    text: 'Check the Home page for daily profit and the Reports page for monthly summary. You can always click "How to use" to see this guide again.'
+  }
+];
+
+function showTour(step = 0) {
+  tourStep = step;
+  const s = tourSteps[step];
+  $('tour-icon').innerHTML = `<i class="fas ${s.icon}"></i>`;
+  $('tour-title').textContent = s.title;
+  $('tour-text').textContent = s.text;
+
+  // dots
+  $('tour-dots').innerHTML = tourSteps.map((_, i) => 
+    `<div class="tour-dot ${i === step ? 'on' : ''}"></div>`
+  ).join('');
+
+  $('tour-next').textContent = step === tourSteps.length - 1 ? 'Finish' : 'Next';
+  $('tour-overlay').hidden = false;
+}
+
+function nextTour() {
+  if (tourStep >= tourSteps.length - 1) {
+    closeTour();
+    return;
+  }
+  showTour(tourStep + 1);
+}
+
+function closeTour() {
+  $('tour-overlay').hidden = true;
+  try { localStorage.setItem('bb_tour_done', '1'); } catch {}
+}
+
+$('tour-next').onclick = nextTour;
+$('tour-skip').onclick = closeTour;
+$('start-tour').onclick = () => showTour(0);
+$('start-tour2').onclick = () => showTour(0);
+
+/* ENTER APP */
+$('demo').onclick = () => {
+  $('login').hidden = true;
+  $('app').hidden = false;
+  refresh();
+
+  // Show tour only the first time
+  try {
+    if (!localStorage.getItem('bb_tour_done')) {
+      setTimeout(() => showTour(0), 600);
+    }
+  } catch {}
+  toast('Welcome! Click "How to use" anytime for help.');
+};
+
+$('out').onclick = () => location.reload();
+
+/* THEME */
+function theme() {
+  const d = document.documentElement;
+  const next = (d.dataset.theme || (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light')) === 'dark' ? 'light' : 'dark';
+  d.dataset.theme = next;
+  try { localStorage.setItem('bb_theme', next); } catch {}
+}
+$('theme').onclick = theme;
+
+try {
+  const t = localStorage.getItem('bb_theme');
+  if (t) document.documentElement.dataset.theme = t;
+  const n = localStorage.getItem('bb_name');
+  if (n) {
+    $('bname').textContent = n;
+    $('bizname').value = n;
+  }
+} catch {}
+
+/* NAVIGATION */
+document.querySelectorAll('.nav[data-t]').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.nav[data-t]').forEach(x => x.classList.toggle('on', x === btn));
+    document.querySelectorAll('main section').forEach(s => s.hidden = s.id !== 't-' + btn.dataset.t);
+    scrollTo(0, 0);
+  };
+});
+
+const h = new Date().getHours();
+$('greet').textContent = (h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening') + ' 👋';
+$('date').textContent = new Date().toLocaleDateString('en-KE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+$('rf').onclick = () => refresh(true);
+
+/* DATA */
+function loadData() {
+  S.p = LS.get('products');
+  S.s = LS.get('sales');
+  S.e = LS.get('expenses');
+  S.m = Object.fromEntries(S.p.map(x => [x.id, x]));
+}
+
+function refresh(say = false) {
+  loadData();
+  home(); sellUI(); stock(); exps(); debts(); rep();
+  if (say) toast('Updated');
+}
+
+/* SETTINGS */
+$('save-name').onclick = () => {
+  const name = $('bizname').value.trim();
+  if (!name) return toast('Enter a name', true);
+  $('bname').textContent = name;
+  try { localStorage.setItem('bb_name', name); } catch {}
+  toast('Business name saved ✓');
+};
+
+$('clear').onclick = () => {
+  if (!confirm('Delete ALL data? This cannot be undone.')) return;
+  localStorage.removeItem('bb_products');
+  localStorage.removeItem('bb_sales');
+  localStorage.removeItem('bb_expenses');
+  toast('All data cleared');
+  refresh();
+};
+
+/* DEMO DATA */
+$('seed').onclick = () => {
+  if (!confirm('Load sample data? This will replace current data.')) return;
+
+  const now = Date.now();
+  const products = [
+    { id: uid(), name: 'Maize Flour 2kg', buying_price: 180, selling_price: 220, quantity: 45, low_stock_threshold: 10 },
+    { id: uid(), name: 'Cooking Oil 1L', buying_price: 280, selling_price: 350, quantity: 28, low_stock_threshold: 8 },
+    { id: uid(), name: 'Sugar 1kg', buying_price: 150, selling_price: 180, quantity: 60, low_stock_threshold: 15 },
+    { id: uid(), name: 'Rice 5kg', buying_price: 650, selling_price: 780, quantity: 12, low_stock_threshold: 5 },
+    { id: uid(), name: 'Soap Bar', buying_price: 40, selling_price: 60, quantity: 80, low_stock_threshold: 20 },
+    { id: uid(), name: 'Tissue Paper', buying_price: 90, selling_price: 120, quantity: 3, low_stock_threshold: 5 }
+  ];
+
+  const sales = [
+    { id: uid(), product_name: 'Maize Flour 2kg', quantity: 3, unit_price: 220, total_amount: 660, payment_type: 'cash', is_paid: true, created_at: new Date(now - 864e5).toISOString() },
+    { id: uid(), product_name: 'Cooking Oil 1L', quantity: 2, unit_price: 350, total_amount: 700, payment_type: 'credit', customer_name: 'Mama Amina', is_paid: false, created_at: new Date(now - 864e5 * 2).toISOString() },
+    { id: uid(), product_name: 'Sugar 1kg', quantity: 5, unit_price: 180, total_amount: 900, payment_type: 'cash', is_paid: true, created_at: new Date(now - 864e5 * 3).toISOString() },
+    { id: uid(), product_name: 'Soap Bar', quantity: 10, unit_price: 60, total_amount: 600, payment_type: 'cash', is_paid: true, created_at: new Date().toISOString() },
+    { id: uid(), product_name: 'Rice 5kg', quantity: 1, unit_price: 780, total_amount: 780, payment_type: 'credit', customer_name: 'John Kamau', is_paid: false, created_at: new Date(now - 864e5 * 4).toISOString() }
+  ];
+
+  const expenses = [
+    { id: uid(), description: 'Shop rent', amount: 5000, created_at: new Date(now - 864e5 * 5).toISOString() },
+    { id: uid(), description: 'Electricity', amount: 1200, created_at: new Date(now - 864e5 * 2).toISOString() },
+    { id: uid(), description: 'Transport', amount: 450, created_at: new Date(now - 864e5).toISOString() }
+  ];
+
+  LS.set('products', products);
+  LS.set('sales', sales);
+  LS.set('expenses', expenses);
+  toast('Demo data loaded!');
+  refresh();
+};
+
+/* HOME */
+function home() {
+  const t0 = sod(new Date());
+  const ts = S.s.filter(x => new Date(x.created_at) >= t0);
+  const te = S.e.filter(x => new Date(x.created_at) >= t0);
+  const rev = sum(ts, x => x.total_amount);
+  const net = rev - sum(ts, cost) - sum(te, x => x.amount);
+
+  $('s1').textContent = money(rev);
+  $('s2').textContent = money(sum(te, x => x.amount));
+  $('s3').textContent = money(net);
+  $('s3').className = net < 0 ? 'neg' : 'pos';
+  $('s4').textContent = money(sum(S.s.filter(x => x.payment_type === 'credit' && !x.is_paid), x => x.total_amount));
+
+  const days = [...Array(7)].map((_, i) => {
+    const d = sod(new Date());
+    d.setDate(d.getDate() - 6 + i);
+    return d;
+  });
+  const vals = days.map(d => sum(S.s.filter(x => sod(x.created_at).getTime() === d.getTime()), x => x.total_amount));
+  const mx = Math.max(...vals, 1);
+
+  $('chart').innerHTML = vals.map((a, i) => {
+    const hh = a / mx * 140;
+    const x = i * 100 + 20;
+    return `<g>
+      <title>${money(a)}</title>
+      <rect x="${x}" y="${165-hh}" width="60" height="${Math.max(hh,4)}" rx="10" fill="url(#gr)"/>
+      <text x="${x+30}" y="${157-hh}" text-anchor="middle" class="cv">${a ? Math.round(a).toLocaleString() : ''}</text>
+      <text x="${x+30}" y="190" text-anchor="middle">${days[i].toLocaleDateString('en',{weekday:'short'})}</text>
+    </g>`;
+  }).join('');
+
+  const low = S.p.filter(p => p.quantity <= p.low_stock_threshold);
+  $('low').innerHTML = low.length
+    ? low.map(p => `<div class="item"><span>${esc(p.name)}</span><span class="pill w">${p.quantity} left</span></div>`).join('')
+    : `<div class="empty"><i class="fas fa-check-circle"></i><br>All products well stocked</div>`;
+
+  const wk = days[0];
+  const agg = {};
+  S.s.filter(x => new Date(x.created_at) >= wk).forEach(x => {
+    const a = agg[x.product_name] || (agg[x.product_name] = { q: 0, t: 0 });
+    a.q += x.quantity;
+    a.t += Number(x.total_amount);
+  });
+  const top = Object.entries(agg).sort((a, b) => b[1].t - a[1].t).slice(0, 5);
+  $('top').innerHTML = top.length
+    ? top.map(([n, a], i) => `<div class="item"><span><b>${i+1}.</b> ${esc(n)}<small>${a.q} sold</small></span><b>${money(a.t)}</b></div>`).join('')
+    : `<div class="empty"><i class="fas fa-chart-bar"></i><br>No sales this week yet</div>`;
+}
+
+/* SELL */
+function sellUI() {
+  const list = $('product-list');
+  list.innerHTML = S.p.map(p => `<option value="${esc(p.name)}">`).join('');
+
+  const updateTotal = () => {
+    const qty = parseInt($('sq').value) || 0;
+    const price = parseFloat($('sprice').value) || 0;
+    $('pt').textContent = money(qty * price);
+  };
+  $('sq').oninput = updateTotal;
+  $('sprice').oninput = updateTotal;
+  updateTotal();
+
+  $('sl').innerHTML = S.s.slice(0, 25).map(s => `
+    <div class="item">
+      <span>${esc(s.product_name)} × ${s.quantity}
+        <small>${new Date(s.created_at).toLocaleString('en-KE',{dateStyle:'medium',timeStyle:'short'})} · 
+        ${s.payment_type === 'credit' ? (s.is_paid ? 'Credit, paid' : 'Credit: ' + esc(s.customer_name || '')) : 'Cash'}</small>
+      </span>
+      <b class="pos">${money(s.total_amount)}</b>
+    </div>`).join('') || `<div class="empty"><i class="fas fa-receipt"></i><br>No sales yet</div>`;
+}
+
+$('sy').onchange = () => $('cf').hidden = $('sy').value !== 'credit';
+
+$('ss').onclick = function () {
+  const name = $('sp').value.trim();
+  const qty = parseInt($('sq').value) || 0;
+  const price = parseFloat($('sprice').value) || 0;
+  const t = $('sy').value;
+  const c = $('sc').value.trim();
+
+  if (!name) return toast('Please type the product name', true);
+  if (qty < 1) return toast('Enter quantity', true);
+  if (price <= 0) return toast('Enter selling price', true);
+  if (t === 'credit' && !c) return toast('Enter customer name for credit sale', true);
+
+  const existing = S.p.find(p => p.name.toLowerCase() === name.toLowerCase());
+  if (existing) {
+    if (qty > existing.quantity) return toast(`Only ${existing.quantity} left in stock`, true);
+    existing.quantity -= qty;
+    LS.set('products', S.p);
+  }
+
+  const sale = {
+    id: uid(),
+    product_name: name,
+    quantity: qty,
+    unit_price: price,
+    total_amount: price * qty,
+    payment_type: t,
+    customer_name: t === 'credit' ? c : null,
+    is_paid: t === 'cash',
+    created_at: new Date().toISOString()
+  };
+
+  S.s.unshift(sale);
+  LS.set('sales', S.s);
+
+  $('sp').value = '';
+  $('sq').value = 1;
+  $('sprice').value = '';
+  $('sc').value = '';
+  toast('Sale saved ✓');
+  refresh();
+};
+
+/* STOCK */
+function stock() {
+  const q = $('q').value.toLowerCase();
+  $('sval').textContent = '· stock value ' + money(sum(S.p, p => p.buying_price * p.quantity));
+
+  const list = S.p.filter(p => p.name.toLowerCase().includes(q));
+  $('stl').innerHTML = list.length ? list.map(p => `
+    <div class="item">
+      <span>
+        <b>${esc(p.name)}</b>
+        <small>Buy ${money(p.buying_price)} · Sell ${money(p.selling_price)} · Margin ${money(p.selling_price - p.buying_price)}</small>
+      </span>
+      <div class="acts">
+        <span class="pill ${p.quantity <= p.low_stock_threshold ? 'w' : ''}">${p.quantity} left</span>
+        <button class="btn alt sm" onclick="restock('${esc(p.id)}')">+ Stock</button>
+        <button class="btn alt sm" onclick="price('${esc(p.id)}')">Price</button>
+        <button class="btn alt sm neg" onclick="delP('${esc(p.id)}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join('') : `<div class="empty"><i class="fas fa-box-open"></i><br>No products yet</div>`;
+}
+$('q').oninput = stock;
+
+$('sv').onclick = () => {
+  const name = $('pn').value.trim();
+  if (!name) return toast('Enter product name', true);
+
+  const product = {
+    id: uid(),
+    name,
+    buying_price: parseFloat($('pb').value) || 0,
+    selling_price: parseFloat($('ps').value) || 0,
+    quantity: parseInt($('pq').value) || 0,
+    low_stock_threshold: parseInt($('pt2').value) || 5
+  };
+
+  S.p.push(product);
+  LS.set('products', S.p);
+  ['pn', 'pb', 'ps', 'pq'].forEach(id => $(id).value = '');
+  toast('Product saved ✓');
+  refresh();
+};
+
+window.restock = id => {
+  const n = parseInt(prompt('How many to add?'));
+  if (!n || n < 1) return;
+  const p = S.p.find(x => x.id === id);
+  if (p) {
+    p.quantity += n;
+    LS.set('products', S.p);
+    toast('Stock updated');
+    refresh();
+  }
+};
+
+window.price = id => {
+  const p = S.p.find(x => x.id === id);
+  if (!p) return;
+  const n = parseFloat(prompt('New selling price (KSh):', p.selling_price));
+  if (isNaN(n)) return;
+  p.selling_price = n;
+  LS.set('products', S.p);
+  toast('Price updated');
+  refresh();
+};
+
+window.delP = id => {
+  const p = S.p.find(x => x.id === id);
+  if (!p) return;
+  if (!confirm('Delete ' + p.name + '?')) return;
+  S.p = S.p.filter(x => x.id !== id);
+  LS.set('products', S.p);
+  toast('Deleted');
+  refresh();
+};
+
+/* EXPENSES */
+function exps() {
+  $('el').innerHTML = S.e.slice(0, 30).map(e => `
+    <div class="item">
+      <span>${esc(e.description)}
+        <small>${new Date(e.created_at).toLocaleString('en-KE',{dateStyle:'medium',timeStyle:'short'})}</small>
+      </span>
+      <span class="acts">
+        <b class="neg">${money(e.amount)}</b>
+        <button class="btn alt sm neg" onclick="delE('${esc(e.id)}')"><i class="fas fa-trash"></i></button>
+      </span>
+    </div>`).join('') || `<div class="empty"><i class="fas fa-receipt"></i><br>No expenses yet</div>`;
+}
+
+$('se').onclick = () => {
+  const d = $('ed').value.trim();
+  const a = parseFloat($('ea').value);
+  if (!d || !a) return toast('Fill both fields', true);
+
+  S.e.unshift({
+    id: uid(),
+    description: d,
+    amount: a,
+    created_at: new Date().toISOString()
+  });
+  LS.set('expenses', S.e);
+  $('ed').value = $('ea').value = '';
+  toast('Expense saved ✓');
+  refresh();
+};
+
+window.delE = id => {
+  if (!confirm('Delete this expense?')) return;
+  S.e = S.e.filter(e => e.id !== id);
+  LS.set('expenses', S.e);
+  refresh();
+};
+
+/* DEBTS */
+function debts() {
+  const d = S.s.filter(x => x.payment_type === 'credit' && !x.is_paid);
+  $('dt').textContent = money(sum(d, x => x.total_amount)) + ' owed';
+
+  $('dl').innerHTML = d.length ? d.map(x => {
+    const days = Math.floor((Date.now() - new Date(x.created_at)) / 864e5);
+    return `<div class="item">
+      <span>
+        <b>${esc(x.customer_name || 'Unknown')}</b>
+        <small>${esc(x.product_name || 'Manual debt')} · ${days ? days + ' days ago' : 'today'}</small>
+      </span>
+      <span class="acts">
+        <b class="neg">${money(x.total_amount)}</b>
+        <button class="btn sm" onclick="paid('${esc(x.id)}')">Mark paid</button>
+      </span>
+    </div>`;
+  }).join('') : `<div class="empty"><i class="fas fa-handshake"></i><br>Nobody owes you anything ✓</div>`;
+}
+
+$('sd').onclick = () => {
+  const name = $('dc').value.trim();
+  const amount = parseFloat($('da').value);
+  const note = $('dn').value.trim() || 'Manual debt';
+
+  if (!name) return toast('Enter customer name', true);
+  if (!amount || amount < 1) return toast('Enter a valid amount', true);
+
+  S.s.unshift({
+    id: uid(),
+    product_name: note,
+    quantity: 1,
+    unit_price: amount,
+    total_amount: amount,
+    payment_type: 'credit',
+    customer_name: name,
+    is_paid: false,
+    created_at: new Date().toISOString()
+  });
+
+  LS.set('sales', S.s);
+  $('dc').value = $('da').value = $('dn').value = '';
+  toast('Debt saved ✓');
+  refresh();
+};
+
+window.paid = id => {
+  if (!confirm('Mark this debt as paid?')) return;
+  const s = S.s.find(x => x.id === id);
+  if (s) s.is_paid = true;
+  LS.set('sales', S.s);
+  toast('Marked as paid ✓');
+  refresh();
+};
+
+/* REPORTS */
+function rep() {
+  const m = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  const ms = S.s.filter(x => new Date(x.created_at) >= m);
+  const me = S.e.filter(x => new Date(x.created_at) >= m);
+  const net = sum(ms, x => x.total_amount) - sum(ms, cost) - sum(me, x => x.amount);
+
+  $('m1').textContent = money(sum(ms, x => x.total_amount));
+  $('m2').textContent = money(sum(me, x => x.amount));
+  $('m3').textContent = money(net);
+  $('m3').className = net < 0 ? 'neg' : 'pos';
+}
+
+function csv(name, rows) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n')], { type: 'text/csv' }));
+  a.download = name;
+  a.click();
+}
+
+$('d1').onclick = () => csv('sales.csv', [['Date','Product','Qty','Price','Total','Type','Customer','Paid']].concat(
+  S.s.map(s => [new Date(s.created_at).toLocaleString(), s.product_name, s.quantity, s.unit_price, s.total_amount, s.payment_type, s.customer_name || '', s.is_paid ? 'Yes' : 'No'])
+));
+$('d2').onclick = () => csv('expenses.csv', [['Date','Description','Amount']].concat(
+  S.e.map(e => [new Date(e.created_at).toLocaleString(), e.description, e.amount])
+));
+$('d3').onclick = () => csv('stock.csv', [['Name','Buying','Selling','Qty','Alert']].concat(
+  S.p.map(p => [p.name, p.buying_price, p.selling_price, p.quantity, p.low_stock_threshold])
+));
+</script>
+</body>
+</html>
